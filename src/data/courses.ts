@@ -1,0 +1,195 @@
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  instructor: string;
+  category: string;
+  level: "Beginner" | "Intermediate" | "Advanced";
+  rating: number;
+  reviewCount: number;
+  students: number;
+  price: number;
+  originalPrice: number;
+  image: string;
+  duration: string;
+  lessons: number;
+  tags: string[];
+  featured?: boolean;
+}
+
+export const categories = [
+  { name: "Web Development", icon: "💻", count: 1240 },
+  { name: "Data Science", icon: "📊", count: 890 },
+  { name: "Mobile Development", icon: "📱", count: 650 },
+  { name: "Cloud Computing", icon: "☁️", count: 430 },
+  { name: "AI & Machine Learning", icon: "🤖", count: 780 },
+  { name: "Cybersecurity", icon: "🔒", count: 320 },
+  { name: "UI/UX Design", icon: "🎨", count: 560 },
+  { name: "Business", icon: "📈", count: 410 },
+];
+
+export const courses: Course[] = [
+  {
+    id: "1",
+    title: "The Complete Web Development Bootcamp 2024",
+    description: "Become a full-stack web developer with just ONE course. HTML, CSS, JavaScript, Node, React, PostgreSQL, Web3 and DApps.",
+    instructor: "Dr. Angela Yu",
+    category: "Web Development",
+    level: "Beginner",
+    rating: 4.8,
+    reviewCount: 24500,
+    students: 185000,
+    price: 12.99,
+    originalPrice: 89.99,
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
+    duration: "63 hours",
+    lessons: 490,
+    tags: ["HTML", "CSS", "JavaScript", "React", "Node.js"],
+    featured: true,
+  },
+  {
+    id: "2",
+    title: "Machine Learning A-Z: AI, Python & R",
+    description: "Learn to create Machine Learning algorithms in Python and R from two Data Science experts. Code templates included.",
+    instructor: "Kirill Eremenko",
+    category: "AI & Machine Learning",
+    level: "Intermediate",
+    rating: 4.7,
+    reviewCount: 18200,
+    students: 142000,
+    price: 14.99,
+    originalPrice: 94.99,
+    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=400&fit=crop",
+    duration: "44 hours",
+    lessons: 382,
+    tags: ["Python", "R", "TensorFlow", "Machine Learning"],
+    featured: true,
+  },
+  {
+    id: "3",
+    title: "iOS & Swift - The Complete iOS App Development",
+    description: "From beginner to iOS app developer with just one course! Fully updated for iOS 17 and Swift 5.9.",
+    instructor: "Dr. Angela Yu",
+    category: "Mobile Development",
+    level: "Beginner",
+    rating: 4.8,
+    reviewCount: 12800,
+    students: 98000,
+    price: 11.99,
+    originalPrice: 79.99,
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
+    duration: "55 hours",
+    lessons: 540,
+    tags: ["Swift", "iOS", "SwiftUI", "Xcode"],
+  },
+  {
+    id: "4",
+    title: "AWS Certified Solutions Architect Associate",
+    description: "Full practice exam included + Pro tips. Pass the AWS Certified Solutions Architect Associate Certification.",
+    instructor: "Stephane Maarek",
+    category: "Cloud Computing",
+    level: "Intermediate",
+    rating: 4.7,
+    reviewCount: 21000,
+    students: 165000,
+    price: 13.99,
+    originalPrice: 84.99,
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
+    duration: "27 hours",
+    lessons: 290,
+    tags: ["AWS", "Cloud", "DevOps", "Architecture"],
+  },
+  {
+    id: "5",
+    title: "The Complete Cyber Security Course",
+    description: "Volume 1 - Hackers Exposed! An advanced practical skill set for becoming a cyber security specialist.",
+    instructor: "Nathan House",
+    category: "Cybersecurity",
+    level: "Advanced",
+    rating: 4.6,
+    reviewCount: 8900,
+    students: 67000,
+    price: 15.99,
+    originalPrice: 99.99,
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop",
+    duration: "12 hours",
+    lessons: 165,
+    tags: ["Security", "Networking", "Ethical Hacking"],
+  },
+  {
+    id: "6",
+    title: "UI/UX Design Masterclass with Figma",
+    description: "Learn UI/UX design from scratch. Master Figma, design systems, prototyping, and user research.",
+    instructor: "Daniel Scott",
+    category: "UI/UX Design",
+    level: "Beginner",
+    rating: 4.9,
+    reviewCount: 7600,
+    students: 52000,
+    price: 10.99,
+    originalPrice: 74.99,
+    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
+    duration: "32 hours",
+    lessons: 245,
+    tags: ["Figma", "UI Design", "UX Research", "Prototyping"],
+    featured: true,
+  },
+  {
+    id: "7",
+    title: "Python for Data Science and Machine Learning",
+    description: "Learn how to use NumPy, Pandas, Seaborn, Matplotlib, Plotly, Scikit-Learn and more!",
+    instructor: "Jose Portilla",
+    category: "Data Science",
+    level: "Intermediate",
+    rating: 4.6,
+    reviewCount: 15400,
+    students: 120000,
+    price: 12.99,
+    originalPrice: 89.99,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+    duration: "25 hours",
+    lessons: 210,
+    tags: ["Python", "Pandas", "NumPy", "Data Visualization"],
+  },
+  {
+    id: "8",
+    title: "React Native - The Practical Guide",
+    description: "Use React Native and your React knowledge to build native iOS and Android Apps.",
+    instructor: "Maximilian Schwarzmüller",
+    category: "Mobile Development",
+    level: "Intermediate",
+    rating: 4.7,
+    reviewCount: 9800,
+    students: 78000,
+    price: 13.99,
+    originalPrice: 84.99,
+    image: "https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=600&h=400&fit=crop",
+    duration: "38 hours",
+    lessons: 320,
+    tags: ["React Native", "JavaScript", "Mobile", "Cross-platform"],
+  },
+];
+
+export const testimonials = [
+  {
+    name: "Sarah Chen",
+    role: "Software Engineer at Google",
+    avatar: "SC",
+    text: "Skillora transformed my career. The courses are incredibly well-structured and the instructors are world-class. I landed my dream job within 6 months.",
+    rating: 5,
+  },
+  {
+    name: "James Rodriguez",
+    role: "Data Scientist at Meta",
+    avatar: "JR",
+    text: "The AI & ML courses on Skillora are unmatched. The hands-on projects gave me real-world experience that set me apart in interviews.",
+    rating: 5,
+  },
+  {
+    name: "Priya Patel",
+    role: "Product Designer at Apple",
+    avatar: "PP",
+    text: "I went from zero design experience to a senior role. Skillora's UI/UX curriculum is comprehensive and constantly updated with industry trends.",
+    rating: 5,
+  },
+];
