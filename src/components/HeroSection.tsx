@@ -16,7 +16,7 @@ const HeroSection = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="animate-fade-in-up">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-foreground/10 text-primary-foreground/90 text-sm font-medium backdrop-blur-sm border border-primary-foreground/10 mb-6">
-              🚀 New: AI-Powered Learning Paths
+              New: AI-Powered Learning Paths
             </span>
           </div>
 
@@ -32,7 +32,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-2">
-            Join over 10 million learners. Access world-class courses from top instructors,
+            Join over 1000+ learners. Access world-class courses from top instructors,
             earn certificates, and accelerate your career with Skillora.
           </p>
 
@@ -50,9 +50,9 @@ const HeroSection = () => {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 mt-16 max-w-lg mx-auto animate-fade-in-up-delay-3">
             {[
-              { icon: Users, value: "10M+", label: "Learners" },
-              { icon: BookOpen, value: "5,000+", label: "Courses" },
-              { icon: Award, value: "50K+", label: "Certificates" },
+              { icon: Users, value: "1000+", label: "Learners" },
+              { icon: BookOpen, value: "100+", label: "Courses" },
+              { icon: Award, value: "500+", label: "Certificates" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <stat.icon className="w-6 h-6 text-primary-foreground/60 mx-auto mb-2" />
