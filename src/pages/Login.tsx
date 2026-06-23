@@ -12,7 +12,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
   const { signIn, isAdmin } = useAuth();
+=======
+  const { signIn } = useAuth();
+>>>>>>> b7432542294fba51a49266c1329c76b5c942a203
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,6 +28,7 @@ const Login = () => {
     setIsLoading(true);
     const { error } = await signIn(email, password);
     setIsLoading(false);
+<<<<<<< HEAD
    if (error) {
   toast.error(error);
 } else {
@@ -35,6 +40,14 @@ const Login = () => {
     navigate("/dashboard");
   }
 }
+=======
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success("Logged in successfully!");
+      navigate("/dashboard");
+    }
+>>>>>>> b7432542294fba51a49266c1329c76b5c942a203
   };
 
   return (
