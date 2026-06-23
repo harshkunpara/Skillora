@@ -7,14 +7,12 @@ import Footer from "@/components/Footer";
 import { courses } from "@/data/courses";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-<<<<<<< HEAD
 import { Navigate } from "react-router-dom";
 interface Enrollment {
   course_id: string;
   enrolled_at: string;
   progress: number;
 }
-=======
 
 interface Enrollment {
   course_id: string;
@@ -22,23 +20,21 @@ interface Enrollment {
   enrolled_at: string;
 }
 
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
+
 const Dashboard = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
+
   const [certificateCount, setCertificateCount] = useState(0);
-=======
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/login");
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-<<<<<<< HEAD
+
    const fetchEnrollments = async () => {
   if (!user) return;
 
@@ -72,46 +68,33 @@ setCertificateCount(certificateData?.length || 0);
 
 setLoading(false);
 };
-=======
-    const fetchEnrollments = async () => {
-      if (!user) return;
-      const { data } = await supabase
-        .from("enrollments")
-        .select("course_id, progress, enrolled_at")
-        .eq("user_id", user.id)
-        .order("enrolled_at", { ascending: false });
-      setEnrollments(data ?? []);
-      setLoading(false);
-    };
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
     if (user) fetchEnrollments();
   }, [user]);
 
-  const enrolledCourses = enrollments
-    .map((e) => {
-      const course = courses.find((c) => c.id === e.course_id);
-<<<<<<< HEAD
-      return course
-  ? {
-      course,
-      progress: e.progress,
-    }
-  : null;
-    })
-    .filter(Boolean) as { course: (typeof courses)[0]; progress: number }[];
-    
-  const totalHours = enrolledCourses.reduce(
+const enrolledCourses = enrollments
+  .map((e) => {
+    const course = courses.find((c) => c.id === e.course_id);
+
+    return course
+      ? {
+          course,
+          progress: e.progress,
+        }
+      : null;
+  })
+  .filter(Boolean) as {
+    course: (typeof courses)[0];
+    progress: number;
+  }[];
+
+const totalHours = enrolledCourses.reduce(
   (sum, item) => sum + (item.progress / 100) * 40,
   0
 );
+
 const streak = enrolledCourses.filter(
   (course) => course.progress > 0
 ).length;
-=======
-      return course ? { course, progress: e.progress } : null;
-    })
-    .filter(Boolean) as { course: (typeof courses)[0]; progress: number }[];
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
 
   if (authLoading || loading) {
     return (
@@ -133,7 +116,7 @@ const streak = enrolledCourses.filter(
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {[
             { icon: BookOpen, label: "Enrolled Courses", value: enrolledCourses.length.toString() },
-<<<<<<< HEAD
+
             {
   icon: Clock,
   label: "Hours Learned",
@@ -149,11 +132,7 @@ const streak = enrolledCourses.filter(
   label: "Streak",
   value: `${streak} days`,
 },
-=======
-            { icon: Clock, label: "Hours Learned", value: "0" },
-            { icon: Award, label: "Certificates", value: "0" },
-            { icon: TrendingUp, label: "Streak", value: "0 days" },
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
+
           ].map((s) => (
             <div key={s.label} className="bg-card border border-border/50 rounded-xl p-5 card-hover">
               <s.icon className="w-8 h-8 text-primary mb-3" />

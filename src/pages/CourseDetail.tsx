@@ -9,12 +9,10 @@ import { courses } from "@/data/courses";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-<<<<<<< HEAD
+
 import { FileCheck } from "lucide-react";
 import jsPDF from "jspdf";
-=======
 
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
 const CourseDetail = () => {
   const { id } = useParams();
   const course = courses.find((c) => c.id === id);
@@ -62,7 +60,7 @@ const CourseDetail = () => {
       toast.success("Successfully enrolled! 🎉");
     }
   };
-<<<<<<< HEAD
+
 const markCourseComplete = async () => {
   if (!user) return;
 
@@ -194,9 +192,7 @@ pdf.text(
 );
   pdf.save(`${course?.title}-certificate.pdf`);
 };
-=======
 
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
   if (!course) {
     return (
       <div className="min-h-screen bg-background">
@@ -330,7 +326,7 @@ pdf.text(
               ))}
             </div>
           </section>
-<<<<<<< HEAD
+
 {id === "16" && isEnrolled && (
   <section className="mb-12">
     <h2 className="text-2xl font-bold text-foreground mb-6">
@@ -364,9 +360,7 @@ pdf.text(
     </div>
   </section>
 )}
-=======
 
->>>>>>> b7432542294fba51a49266c1329c76b5c942a203
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">Topics</h2>
             <div className="flex flex-wrap gap-2">
