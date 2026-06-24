@@ -12,6 +12,7 @@ import { toast } from "sonner";
 
 import { FileCheck } from "lucide-react";
 import jsPDF from "jspdf";
+import logo from "@/assest/skillora-logo.png";
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -81,6 +82,7 @@ const markCourseComplete = async () => {
 };
 const downloadCertificate = () => {
  const pdf = new jsPDF("landscape");
+ pdf.addImage(logo, "PNG", 120, 10, 40, 40);
 pdf.setDrawColor(212, 175, 55);
 pdf.setLineWidth(2);
 pdf.rect(10, 10, 277, 190);
