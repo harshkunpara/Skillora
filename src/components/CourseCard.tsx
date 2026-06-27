@@ -65,8 +65,8 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
           {/* Price */}
           <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-foreground">${course.price}</span>
-            <span className="text-sm text-muted-foreground line-through">${course.originalPrice}</span>
+            <span className="text-lg font-bold text-foreground">₹{course.price}</span>
+            <span className="text-sm text-muted-foreground line-through">₹{course.originalPrice}</span>
             <Badge variant="secondary" className="text-xs ml-auto">
               {Math.round((1 - course.price / course.originalPrice) * 100)}% off
             </Badge>

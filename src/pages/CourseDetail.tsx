@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Star, Clock, BookOpen, Users, Play, CheckCircle, Award, ArrowLeft, Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { courses } from "@/data/courses";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { courseModules } from "@/data/courseModules";
 
 import { FileCheck } from "lucide-react";
 import jsPDF from "jspdf";
@@ -16,6 +17,12 @@ import logo from "@/assest/skillora-logo.png";
 
 const CourseDetail = () => {
   const { id } = useParams();
+  const modules = courseModules[Number(id)] || [];
+
+  const [currentLesson, setCurrentLesson] = useState(
+    modules[0]?.lessons[0] || null
+  );
+  const videoRef = useRef<HTMLDivElement>(null);
   const course = courses.find((c) => c.id === id);
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -62,138 +69,138 @@ const CourseDetail = () => {
     }
   };
 
-const markCourseComplete = async () => {
-  if (!user) return;
+  const markCourseComplete = async () => {
+    if (!user) return;
 
-  const { error } = await supabase
-    .from("progress")
-    .upsert({
-      user_id: user.id,
-      course_id: id!,
-      progress: 100,
-      completed: true,
-    });
+    const { error } = await supabase
+      .from("progress")
+      .upsert({
+        user_id: user.id,
+        course_id: id!,
+        progress: 100,
+        completed: true,
+      });
 
-  if (error) {
-    toast.error(error.message);
-  } else {
-    toast.success("Course Completed 🎉");
-  }
-};
-const downloadCertificate = () => {
- const pdf = new jsPDF("landscape");
- pdf.addImage(logo, "PNG", 120, 10, 40, 40);
-pdf.setDrawColor(212, 175, 55);
-pdf.setLineWidth(2);
-pdf.rect(10, 10, 277, 190);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Course Completed 🎉");
+    }
+  };
 
-pdf.setTextColor(37, 99, 235);
+  const downloadCertificate = () => {
+    const pdf = new jsPDF("landscape");
+    pdf.addImage(logo, "PNG", 120, 10, 40, 40);
+    pdf.setDrawColor(212, 175, 55);
+    pdf.setLineWidth(2);
+    pdf.rect(10, 10, 277, 190);
 
-pdf.setFontSize(30);
-pdf.text(
-  "CERTIFICATE OF COMPLETION",
-  148,
-  55,
-  { align: "center" }
-);
-pdf.setTextColor(0, 0, 0);
+    pdf.setTextColor(37, 99, 235);
 
+    pdf.setFontSize(30);
+    pdf.text(
+      "CERTIFICATE OF COMPLETION",
+      148,
+      55,
+      { align: "center" }
+    );
+    pdf.setTextColor(0, 0, 0);
 
-  pdf.setFontSize(26);
-  pdf.text(
-    "This is to certify that",
-    148,
-    70,
-    { align: "center" }
-  );
+    pdf.setFontSize(26);
+    pdf.text(
+      "This is to certify that",
+      148,
+      70,
+      { align: "center" }
+    );
 
-  pdf.setFontSize(28);
-  pdf.text(
-    user?.user_metadata?.full_name || "Student",
-    148,
-    95,
-    { align: "center" }
-  );
+    pdf.setFontSize(28);
+    pdf.text(
+      user?.user_metadata?.full_name || "Student",
+      148,
+      95,
+      { align: "center" }
+    );
 
-pdf.setFontSize(18);
+    pdf.setFontSize(18);
 
-pdf.text(
-  "For outstanding dedication and successful completion of",
-  148,
-  120,
-  { align: "center" }
-);
+    pdf.text(
+      "For outstanding dedication and successful completion of",
+      148,
+      120,
+      { align: "center" }
+    );
 
-  pdf.setFontSize(24);
-  pdf.text(
-    course?.title || "",
-    148,
-    145,
-    { align: "center" }
-  );
-  pdf.setFontSize(12);
+    pdf.setFontSize(24);
+    pdf.text(
+      course?.title || "",
+      148,
+      145,
+      { align: "center" }
+    );
+    pdf.setFontSize(12);
 
-pdf.text(
-  "Awarded for successfully completing all course requirements",
-  148,
-  158,
-  { align: "center" }
-);
+    pdf.text(
+      "Awarded for successfully completing all course requirements",
+      148,
+      158,
+      { align: "center" }
+    );
 
-pdf.text(
-  "and demonstrating practical proficiency in the subject matter.",
-  148,
-  166,
-  { align: "center" }
-);
+    pdf.text(
+      "and demonstrating practical proficiency in the subject matter.",
+      148,
+      166,
+      { align: "center" }
+    );
 
-pdf.setTextColor(0, 0, 0);
-const certificateId =
-  "SKL-" + Math.floor(100000 + Math.random() * 900000);
+    pdf.setTextColor(0, 0, 0);
+    const certificateId =
+      "SKL-" + Math.floor(100000 + Math.random() * 900000);
 
-pdf.setFontSize(12);
+    pdf.setFontSize(12);
 
-// Left Side
-pdf.text(
-  `Certificate ID: ${certificateId}`,
-  40,
-  145
-);
+    // Left Side
+    pdf.text(
+      `Certificate ID: ${certificateId}`,
+      40,
+      145
+    );
 
-// Right Side
-pdf.text(
-  `Date: ${new Date().toLocaleDateString()}`,
-  220,
-  145
-);
-  pdf.line(110, 170, 180, 170);
+    // Right Side
+    pdf.text(
+      `Date: ${new Date().toLocaleDateString()}`,
+      220,
+      145
+    );
+    pdf.line(110, 170, 180, 170);
 
-pdf.setFontSize(14);
+    pdf.setFontSize(14);
 
-pdf.text(
-  "Harsh Patel",
-  148,
-  178,
-  { align: "center" }
-);
+    pdf.text(
+      "Harsh Patel",
+      148,
+      178,
+      { align: "center" }
+    );
 
-pdf.setFontSize(11);
+    pdf.setFontSize(11);
 
-pdf.text(
-  "Founder & CEO, Skillora",
-  148,
-  185,
-  { align: "center" }
-);
-pdf.setFontSize(10);
+    pdf.text(
+      "Founder & CEO, Skillora",
+      148,
+      185,
+      { align: "center" }
+    );
+    pdf.setFontSize(10);
 
-pdf.text(
-  "Powered by Skillora Learning Platform",
-  220,
-  185
-);
-  pdf.save(`${course?.title}-certificate.pdf`);
-};
+    pdf.text(
+      "Powered by Skillora Learning Platform",
+      220,
+      185
+    );
+    pdf.save(`${course?.title}-certificate.pdf`);
+  };
 
   if (!course) {
     return (
@@ -207,15 +214,6 @@ pdf.text(
       </div>
     );
   }
-
-  const syllabus = [
-    { title: "Getting Started", lessons: 8, duration: "1h 20m" },
-    { title: "Core Fundamentals", lessons: 15, duration: "3h 45m" },
-    { title: "Intermediate Concepts", lessons: 12, duration: "2h 50m" },
-    { title: "Advanced Techniques", lessons: 18, duration: "4h 30m" },
-    { title: "Real-World Projects", lessons: 10, duration: "5h 15m" },
-    { title: "Final Assessment & Certificate", lessons: 5, duration: "1h 30m" },
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -254,8 +252,8 @@ pdf.text(
                   </div>
                 </div>
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="text-3xl font-extrabold text-foreground">${course.price}</span>
-                  <span className="text-lg text-muted-foreground line-through">${course.originalPrice}</span>
+                  <span className="text-3xl font-extrabold text-foreground">₹{course.price}</span>
+                  <span className="text-lg text-muted-foreground line-through">₹{course.originalPrice}</span>
                   <Badge variant="secondary">{Math.round((1 - course.price / course.originalPrice) * 100)}% off</Badge>
                 </div>
                 {checkingEnrollment ? (
@@ -267,7 +265,10 @@ pdf.text(
                     <CheckCircle className="w-4 h-4 mr-2" /> Enrolled
                   </Button>
                 ) : (
-                  <Button className="w-full mb-3 py-5 rounded-lg font-semibold text-base" onClick={handleEnroll} disabled={enrolling}>
+                  <Button
+  className="w-full mb-3 py-5 rounded-lg font-semibold text-base"
+  onClick={() => navigate(`/checkout/${course.id}`)}
+>
                     {enrolling ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Enroll Now
                   </Button>
@@ -310,58 +311,126 @@ pdf.text(
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Course Syllabus</h2>
-            <div className="space-y-3">
-              {syllabus.map((section, i) => (
-                <div key={i} className="bg-card border border-border/50 rounded-lg p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-semibold flex items-center justify-center">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <p className="font-medium text-card-foreground text-sm">{section.title}</p>
-                      <p className="text-xs text-muted-foreground">{section.lessons} lessons • {section.duration}</p>
+            <h2 className="text-2xl font-bold text-foreground mb-6">
+              Course Syllabus
+            </h2>
+
+            <div className="space-y-4">
+              {modules.map((module, i) => (
+                <div
+                  key={i}
+                  className="bg-card border border-border rounded-xl p-5"
+                >
+                  {/* Module Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold">
+                        {i + 1}
+                      </span>
+
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {module.title}
+                        </h3>
+
+                        <p className="text-sm text-muted-foreground">
+                          {module.lessons.length} lessons
+                        </p>
+                      </div>
                     </div>
+
+                    <Play
+                      className="w-5 h-5 text-primary cursor-pointer"
+                      onClick={() => {
+                        setCurrentLesson(module.lessons[0]);
+
+                        setTimeout(() => {
+                          videoRef.current?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }, 100);
+                      }}
+                    />
                   </div>
-                  <Play className="w-4 h-4 text-muted-foreground" />
+
+                  {/* Lessons */}
+                  <div className="space-y-2">
+                    {module.lessons.map((lesson) => (
+                      <button
+                        key={lesson.id}
+                        onClick={() => {
+                          console.log(lesson);
+
+                          setCurrentLesson(lesson);
+
+                          setTimeout(() => {
+                            videoRef.current?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                          }, 100);
+                        }}
+                        className={`w-full text-left rounded-lg border p-3 transition ${
+                          currentLesson?.id === lesson.id
+                            ? "bg-primary text-white"
+                            : "bg-background hover:bg-muted"
+                        }`}
+                      >
+                        <div className="font-medium">
+                          {lesson.title}
+                        </div>
+
+                        <div className="text-sm opacity-70">
+                          {lesson.duration}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
-{id === "16" && isEnrolled && (
-  <section className="mb-12">
-    <h2 className="text-2xl font-bold text-foreground mb-6">
-      Full Course Video
-    </h2>
+          {id === "16" && isEnrolled && (
+            <section ref={videoRef} className="mb-12"> {/* FIXED: Added ref={videoRef} here */}
+              <h2 className="text-2xl font-bold text-foreground mb-6">
+                Full Course Video
+              </h2>
 
-    <div className="rounded-xl overflow-hidden border">
-      <iframe
-        width="100%"
-        height="500"
-        src="https://www.youtube.com/embed/zJSY8tbf_ys"
-        title="Full Stack Web Development"
-        allowFullScreen
-      />
-    </div>
+              <div className="w-full aspect-video rounded-xl overflow-hidden">
+                <iframe
+                  src={currentLesson.video}
+                  title={currentLesson.title}
+                  className="w-full h-full"
+                  allowFullScreen
+                />
+              </div>
 
-    <div className="mt-6 flex gap-4">
-      <Button onClick={markCourseComplete}>
-        <CheckCircle className="w-4 h-4 mr-2" />
-        Complete Course
-      </Button>
+              <h2 className="text-2xl font-bold mt-4">
+                {currentLesson.title}
+              </h2>
 
-  <Button
-  variant="outline"
-  onClick={downloadCertificate}
-  disabled={!isEnrolled}
->
-        <FileCheck className="w-4 h-4 mr-2" />
-        Download Certificate
-      </Button>
-    </div>
-  </section>
-)}
+              <p className="text-muted-foreground">
+                Duration: {currentLesson.duration}
+              </p>
+              <div className="mt-6 flex gap-4">
+                <Button onClick={markCourseComplete}>
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Complete Course
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={downloadCertificate}
+                  disabled={!isEnrolled}
+                >
+                  <FileCheck className="w-4 h-4 mr-2" />
+                  Download Certificate
+                </Button>
+              </div>
+            </section>
+          )}
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">Topics</h2>

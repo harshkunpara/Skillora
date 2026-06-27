@@ -12,8 +12,9 @@ import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
-
+import Checkout from "./pages/Checkout";
 const queryClient = new QueryClient();
+import SubscriptionCheckout from "./pages/SubscriptionCheckout";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -31,6 +32,11 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/checkout/:id" element={<Checkout />} />
+            <Route
+  path="/subscription/:plan"
+  element={<SubscriptionCheckout />}
+/>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

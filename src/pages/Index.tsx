@@ -6,8 +6,10 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import CourseCard from "@/components/CourseCard";
 import { courses, categories, testimonials } from "@/data/courses";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   const featuredCourses = courses.filter((c) => c.featured);
   const trendingCourses = courses.slice(0, 4);
 
@@ -106,13 +108,13 @@ const Index = () => {
       {/* Pricing */}
       <section className="py-20 container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Simple Pricing</h2>
-          <p className="text-muted-foreground">Unlimited access to all courses. Cancel anytime.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Invest in Your Future</h2>
+          <p className="text-muted-foreground">Affordable plans tailored for your career growth.</p>
         </div>
         <div className="grid md:grid-cols-2 max-w-3xl mx-auto gap-6">
           {[
-            { plan: "Monthly", price: "$29", period: "/month", features: ["Unlimited courses", "Certificates", "Offline downloads", "Community access"] },
-            { plan: "Yearly", price: "$199", period: "/year", features: ["Everything in Monthly", "Priority support", "AI learning paths", "Exclusive workshops"], popular: true },
+            { plan: "Monthly", price: "₹2,499", period: "/month", features: ["Unlimited courses", "Certificates", "Offline downloads", "Community access"] },
+            { plan: "Yearly", price: "₹14,999", period: "/year", features: ["Everything in Monthly", "Priority support", "AI learning paths", "Exclusive workshops"], popular: true },
           ].map((p) => (
             <div
               key={p.plan}
@@ -137,15 +139,18 @@ const Index = () => {
                 ))}
               </ul>
               <Button
-                className={`w-full rounded-full py-5 ${
-                  p.popular
-                    ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                    : ""
-                }`}
-                variant={p.popular ? "ghost" : "default"}
-              >
-                Get Started
-              </Button>
+  className={`w-full rounded-full py-5 ${
+    p.popular
+      ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+      : ""
+  }`}
+  variant={p.popular ? "ghost" : "default"}
+  onClick={() =>
+    navigate(`/subscription/${p.plan.toLowerCase()}`)
+  }
+>
+  Get Started
+</Button>
             </div>
           ))}
         </div>
