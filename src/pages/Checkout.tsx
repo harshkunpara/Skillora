@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { courses } from "@/data/courses";
 import { Button } from "@/components/ui/button";
-import qr from "@/assest/payment-qr.jpg";
+import QRCode from "react-qr-code";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -13,6 +13,20 @@ const Checkout = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const course = courses.find((c) => c.id === id);
+  const paymentAmount = course.price;
+
+const paymentTitle = course.title;
+
+const transactionId =
+  `SKL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+const upiLink =
+`upi://pay?pa=harshkunpara742@okaxis
+&pn=Skillora
+&am=${paymentAmount}
+&cu=INR
+&tn=${paymentTitle}
+&tr=${transactionId}`;
 
   const verifyPayment = async () => {
     setLoading(true);
@@ -87,11 +101,14 @@ const Checkout = () => {
 
                   {/* 2. Your QR Code (Placed beautifully under UPI Logo text) */}
                   <div className="w-32 h-32 bg-white p-1.5 rounded-xl shadow-md border border-slate-100 flex items-center justify-center">
-                    <img
-                      src={qr}
-                      alt="Google Pay QR"
-                      className="w-full h-full object-contain rounded-md"
-                    />
+                   <QRCode
+  value={upiLink}
+  size={125}
+  style={{
+    width: "100%",
+    height: "100%",
+  }}
+/>
                   </div>
 
                   {/* 3. Operational Pulse Footer */}
