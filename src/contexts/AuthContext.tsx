@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-type UserRole = "admin" | "user";
+type UserRole = "admin" | "student";
 
 interface AuthContextType {
   session: Session | null;
@@ -29,23 +29,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchRole = async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
+  const fetchRole = async (userId: string, currentUserEmail?: string) => {
+    // Check if the current user matches the specific admin email override directly
+    if (currentUserEmail && currentUserEmail.toLowerCase() === "harshkunpara742@gmail.com") {
+      setRole("admin");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
       .select("role")
-      .eq("user_id", userId)
+      .eq("id", userId)
       .maybeSingle();
-    setRole((data?.role as UserRole) ?? "user");
+
+    console.log(data, error);
+
+    if (data?.role) {
+      setRole(data.role as UserRole);
+    } else {
+      setRole("student");
+    }
   };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
+      async (_event, currentSession) => {
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        if (currentSession?.user) {
           // Use setTimeout to avoid Supabase deadlock
-          setTimeout(() => fetchRole(session.user.id), 0);
+          setTimeout(() => fetchRole(currentSession.user.id, currentSession.user.email), 0);
         } else {
           setRole(null);
         }
@@ -53,11 +66,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchRole(session.user.id);
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+      if (currentSession?.user) {
+        fetchRole(currentSession.user.id, currentSession.user.email);
       }
       setLoading(false);
     });
@@ -85,7 +98,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ session, user, role, loading, signUp, signIn, signOut, isAdmin: role === "admin" }}
+      value={{ 
+        session, 
+        user, 
+        role, 
+        loading, 
+        signUp, 
+        signIn, 
+        signOut, 
+        isAdmin: role === "admin" || user?.email?.toLowerCase() === "harshkunpara742@gmail.com"
+      }}
     >
       {children}
     </AuthContext.Provider>

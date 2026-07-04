@@ -23,6 +23,7 @@ const Login = () => {
     }
     setIsLoading(true);
     const { error } = await signIn(email, password);
+    const { isAdmin } = useAuth();
     setIsLoading(false);
    if (error) {
   toast.error(error);

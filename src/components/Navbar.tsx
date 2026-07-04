@@ -15,7 +15,7 @@ const Navbar = () => {
     { to: "/", label: "Home" },
     { to: "/courses", label: "Courses" },
     ...(user ? [{ to: "/dashboard", label: "Dashboard" }] : []),
-    ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
+    ...(isAdmin ? [{ to: "/admin/dashboard", label: "Admin" }] : []),
   ];
 
   const handleSignOut = async () => {
@@ -65,7 +65,7 @@ const Navbar = () => {
               {user ? (
                 <>
                   {isAdmin && (
-                    <Link to="/admin">
+                    <Link to="/admin/dashboard">
                       <Button variant="ghost" size="sm"><Shield className="w-4 h-4 mr-1" /> Admin</Button>
                     </Link>
                   )}
