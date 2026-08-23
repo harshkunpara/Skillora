@@ -155,7 +155,31 @@ const Index = () => {
           ))}
         </div>
       </section>
+      {/* Founder */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              Founder & Creator
+            </p>
 
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Harsh Kunpara
+            </h2>
+
+            <p className="text-lg font-medium text-primary mb-5">
+              Founder of Skillora
+            </p>
+
+            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Skillora was founded by Harsh Kunpara with the vision of building
+              an AI-powered learning platform that helps students and learners
+              develop practical skills in coding, artificial intelligence,
+              business and modern technology.
+            </p>
+          </div>
+        </div>
+      </section>
       {/* CTA */}
       <section className="py-20">
         <div className="container mx-auto px-4">
